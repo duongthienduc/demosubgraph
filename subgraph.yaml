@@ -1,0 +1,44 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BloxDefense
+    network: bsc
+    source:
+      address: "0x407F8e90782420353c96E4b0d4249772aaAEA67C"
+      abi: BloxDefense
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - ChangedOwnerCutPerMillion
+        - ChangedPublicationFee
+        - OrderCancelled
+        - OrderCreated
+        - OrderSuccessful
+        - OwnershipTransferred
+        - Paused
+        - Unpaused
+      abis:
+        - name: BloxDefense
+          file: ./abis/BloxDefense.json
+      eventHandlers:
+        - event: ChangedOwnerCutPerMillion(uint256)
+          handler: handleChangedOwnerCutPerMillion
+        - event: ChangedPublicationFee(uint256)
+          handler: handleChangedPublicationFee
+        - event: OrderCancelled(bytes32,indexed uint256,indexed address,address)
+          handler: handleOrderCancelled
+        - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderSuccessful(bytes32,indexed uint256,indexed address,address,uint256,indexed address)
+          handler: handleOrderSuccessful
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: Unpaused(address)
+          handler: handleUnpaused
+      file: ./src/mapping.ts
